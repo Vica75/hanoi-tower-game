@@ -5,6 +5,7 @@ class Peg:
     def __init__(self, index):
         self.disks = []
         self.index = index
+        self.screen_pos = ()
 
     def add_disk(self, disk: 'Disk'):
         self.disks.append(disk)

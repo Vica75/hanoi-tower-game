@@ -1,7 +1,12 @@
 from Disk import Disk
+from window_config import WINDOW_WIDTH, WINDOW_HEIGHT
 
 
 class Peg:
+    WIDTH = 20
+    HEIGHT = 300
+    COLOR = (69, 39, 17)
+
     def __init__(self, index):
         self.disks = []
         self.index = index
@@ -27,3 +32,4 @@ class Peg:
 
     def get_disks(self):
         return self.disks
+

@@ -1,7 +1,10 @@
 from enum import Enum
 
+import pygame.time
+
 from Disk import Disk
 from Peg import Peg
+from SelectedDisk import SelectedDisk
 
 
 # class DiskMovementState(Enum):
@@ -14,9 +17,11 @@ from Peg import Peg
 class GameState:
     # add type hints
     pegs: list[Peg]
-    selected_disk: Disk | None
+    selected_disk: SelectedDisk | None
     # selected_disk_state: DiskMovementState
     current_peg_candidate_index: int
+
+    clock = pygame.time.Clock()
 
     def __init__(self):
         self.pegs = []
@@ -38,6 +43,11 @@ class GameState:
             disk = Disk(i, number_of_disks - i)
             self.pegs[0].add_disk(disk)
 
+    def tick(self):
+        delta_time = GameState.clock.tick(60) / 1000.0
+        if self.selected_disk:
+            self.selected_disk.tick(delta_time)
+
     def get_pegs(self):
         return self.pegs
     
@@ -52,9 +62,8 @@ class GameState:
 
     def set_selected_disk(self, disk: 'Disk | None'):
         if disk:
-            self.selected_disk = disk
-            # self.selected_disk_state = DiskMovementState.MOVING_UP
-            # self.selected_disk_move_direction = (0, -1)
+            self.selected_disk = SelectedDisk(disk.stack_index, disk.width_class, self.pegs[disk.peg_index], disk.colour)
+            self.selected_disk.set_state(SelectedDisk.DiskState.MOVING_UP)
             self.current_peg_candidate_index = disk.peg_index
 
     def reset_selected_disk(self):

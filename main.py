@@ -22,6 +22,7 @@ def main():
     while running:
         renderer.draw_game()
         input_manager.handle_events()
+        game_state.tick()
         pygame.display.update()
 
     pygame.quit()

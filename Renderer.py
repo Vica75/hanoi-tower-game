@@ -52,6 +52,10 @@ class Renderer:
             for disk in peg.get_disks():
                 self.draw_disk(disk)
 
+        # draw selected disk
+        if self.game_state.selected_disk:
+            self.draw_disk(self.game_state.selected_disk)
+
         # update position and draw the selected disk
         # if self.game_state.selected_disk:
         #     can_move_up = (

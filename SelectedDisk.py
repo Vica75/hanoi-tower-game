@@ -1,0 +1,56 @@
+from enum import Enum
+
+from Disk import Disk
+
+
+class SelectedDisk(Disk):
+    MAX_SCREEN_HEIGHT = 300
+    MOVEMENT_SPEED = 150
+
+    class DiskState(Enum):
+        IDLE = 0
+        MOVING_UP = 1
+        MOVING_DOWN = 2
+        MOVING_LEFT = 3
+        MOVING_RIGHT = 4
+        WAITING_FOR_INPUT = 5
+
+    def __init__(self, stack_index, width_class, initial_peg_candidate, colour):
+        super().__init__(stack_index, width_class)
+        self.peg_candidate_index = self.peg_index
+        self.peg_candidate = initial_peg_candidate
+        self.state = SelectedDisk.DiskState.IDLE
+        self.colour = colour
+
+    def tick(self, delta_time):
+        if self.state != SelectedDisk.DiskState.IDLE:
+            if self.state == SelectedDisk.DiskState.MOVING_UP:
+                self.move_up(delta_time)
+            elif self.state == SelectedDisk.DiskState.MOVING_DOWN:
+                self.move_down(delta_time)
+            elif self.state == SelectedDisk.DiskState.MOVING_LEFT:
+                self.move_left(delta_time)
+            elif self.state == SelectedDisk.DiskState.MOVING_RIGHT:
+                self.move_right(delta_time)
+
+    def move_up(self, delta_time):
+        if self.screen_pos[1] > SelectedDisk.MAX_SCREEN_HEIGHT:
+            self.screen_pos = (self.screen_pos[0], self.screen_pos[1] - SelectedDisk.MOVEMENT_SPEED * delta_time)
+        else:
+            self.state = SelectedDisk.DiskState.WAITING_FOR_INPUT
+
+    def move_down(self, delta_time):
+        pass
+
+    def move_left(self, delta_time):
+        pass
+
+    def move_right(self, delta_time):
+        pass
+
+    def set_state(self, state: DiskState):
+        self.state = state
+
+    def set_peg_candidate(self, peg):
+        self.peg_candidate = peg
+

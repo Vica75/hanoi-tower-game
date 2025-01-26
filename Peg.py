@@ -7,6 +7,8 @@ class Peg:
     HEIGHT = 300
     COLOR = (69, 39, 17)
 
+    # TODO: refactor so that the screen position is assigned to the peg on initialisation
+    # it is assigned to it anyway when the Renderer is initialised but it feels unclear
     def __init__(self, index):
         self.disks = []
         self.index = index

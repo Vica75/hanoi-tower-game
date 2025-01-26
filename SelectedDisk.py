@@ -1,9 +1,12 @@
 from enum import Enum
 
+import Peg
 from Disk import Disk
 
 
 class SelectedDisk(Disk):
+    peg_candidate: Peg.Peg
+
     MAX_SCREEN_HEIGHT = 300
     MOVEMENT_SPEED = 150
 
@@ -43,14 +46,21 @@ class SelectedDisk(Disk):
         pass
 
     def move_left(self, delta_time):
-        pass
+        min_pos = (self.peg_candidate.screen_pos[0] + (Peg.Peg.WIDTH / 2)) - (self.width / 2)
+        if self.screen_pos[0] > min_pos:
+            self.screen_pos = (self.screen_pos[0] - SelectedDisk.MOVEMENT_SPEED * delta_time, self.screen_pos[1])
+        else:
+            self.state = SelectedDisk.DiskState.WAITING_FOR_INPUT
 
     def move_right(self, delta_time):
-        pass
+        max_pos = (self.peg_candidate.screen_pos[0] + (Peg.Peg.WIDTH / 2)) - (self.width / 2)
+        if self.screen_pos[0] < max_pos:
+            self.screen_pos = (self.screen_pos[0] + SelectedDisk.MOVEMENT_SPEED * delta_time, self.screen_pos[1])
+        else:
+            self.state = SelectedDisk.DiskState.WAITING_FOR_INPUT
 
     def set_state(self, state: DiskState):
         self.state = state
 
     def set_peg_candidate(self, peg):
         self.peg_candidate = peg
-

@@ -1,6 +1,4 @@
 import random
-
-from FiniteStateMachine import FiniteStateMachine
 from window_config import WINDOW_WIDTH, WINDOW_HEIGHT
 import pygame
 from enum import Enum

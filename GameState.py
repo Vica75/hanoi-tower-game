@@ -7,13 +7,6 @@ from Peg import Peg
 from SelectedDisk import SelectedDisk
 
 
-# class DiskMovementState(Enum):
-#     NONE: 0
-#     MOVING_UP: 1
-#     MOVING_DOWN: 2
-#     MOVING_HORIZONTALLY: 3
-
-
 class GameState:
     # add type hints
     pegs: list[Peg]
@@ -95,3 +88,17 @@ class GameState:
         if self.validate_move_down():
             self.get_current_peg_candidate().add_disk(self.selected_disk)
             self.reset_selected_disk()
+
+    def move_selected_disk_left(self):
+        # check if the current peg candidate is not the leftmost one
+        if self.selected_disk.peg_candidate.index > 0:
+            # set the state and the new peg candidate
+            self.selected_disk.set_state(SelectedDisk.DiskState.MOVING_LEFT)
+            self.selected_disk.set_peg_candidate(self.pegs[self.selected_disk.peg_candidate.index - 1])
+
+    def move_selected_disk_right(self):
+        # check if the current peg candidate is not the rightmost one
+        if self.selected_disk.peg_candidate.index < len(self.pegs) - 1:
+            # set the state and the new peg candidate
+            self.selected_disk.set_state(SelectedDisk.DiskState.MOVING_RIGHT)
+            self.selected_disk.set_peg_candidate(self.pegs[self.selected_disk.peg_candidate.index + 1])

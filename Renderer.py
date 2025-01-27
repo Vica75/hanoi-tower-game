@@ -101,13 +101,3 @@ class Renderer:
         disk_surface.fill(disk.colour)
         # draw the rectangle at the correct position
         self.screen.blit(disk_surface, disk.screen_pos)
-
-    # ----------- Selected Disk Movement --------------
-    def set_selected_disk_base_position(self):
-        self.selected_disk_position = self.game_state.selected_disk.calculate_screen_position()
-
-    def update_selected_disk_position(self, delta_time):
-        current_x, current_y = self.selected_disk_position
-        offset_x = self.game_state.selected_disk_move_direction[0] * delta_time * self.MOVEMENT_SPEED
-        offset_y = self.game_state.selected_disk_move_direction[1] * delta_time * self.MOVEMENT_SPEED
-        self.selected_disk_position = (current_x + offset_x, current_y + offset_y)

@@ -13,7 +13,6 @@ class GameState:
     selected_disk: SelectedDisk | None
     # selected_disk_state: DiskMovementState
     current_peg_candidate_index: int
-
     clock = pygame.time.Clock()
 
     def __init__(self):
@@ -55,39 +54,34 @@ class GameState:
 
     def set_selected_disk(self, disk: 'Disk | None'):
         if disk:
-            self.selected_disk = SelectedDisk(disk.stack_index, disk.width_class, self.pegs[disk.peg_index], disk.colour)
+            self.selected_disk = SelectedDisk(
+                disk.stack_index,
+                disk.width_class,
+                self.pegs[disk.peg_index],
+                disk.colour,
+                self.add_selected_disk_to_peg
+            )
             self.selected_disk.set_state(SelectedDisk.DiskState.MOVING_UP)
-            self.current_peg_candidate_index = disk.peg_index
 
-    def reset_selected_disk(self):
+    def add_selected_disk_to_peg(self):
+        stack_index = len(self.selected_disk.peg_candidate.disks)
+        width_class = self.selected_disk.width_class
+        colour = self.selected_disk.colour
+        peg_index = self.selected_disk.peg_candidate.index
+        self.selected_disk.peg_candidate.add_disk(Disk(stack_index, width_class, colour, peg_index))
         self.selected_disk = None
-        # self.selected_disk_state = DiskMovementState.NONE
-        self.selected_disk_move_direction = (0, 0)
-        self.current_peg_candidate_index = -1
 
-    def set_selected_disk_move_direction(self, direction: 'tuple(int, int)'):
-        self.selected_disk_move_direction = direction
-        if direction == (1, 0) and self.current_peg_candidate_index < len(self.pegs) - 1:
-            self.current_peg_candidate_index += 1
-            self.is_disk_moving = True
-        elif direction == (-1, 0) and self.current_peg_candidate_index > 0:
-            self.current_peg_candidate_index -= 1
-            self.is_disk_moving = True
-        elif direction == (0, 1) or direction == (0, -1):
-            self.is_disk_moving = True
-
-    # check if the disk can be put on top of the candidate peg stack
-    def validate_move_down(self):
-        if (not self.get_current_peg_candidate().get_top_disk()
-                or self.get_current_peg_candidate().get_top_disk().width_class > self.selected_disk.width_class):
-            return True
-        else:
-            return False
+    # def reset_selected_disk(self):
+    #     self.selected_disk = None
+    #     # self.selected_disk_state = DiskMovementState.NONE
+    #     self.selected_disk_move_direction = (0, 0)
+    #     self.current_peg_candidate_index = -1
 
     def move_selected_disk_down(self):
-        if self.validate_move_down():
-            self.get_current_peg_candidate().add_disk(self.selected_disk)
-            self.reset_selected_disk()
+        top_disk = self.selected_disk.peg_candidate.get_top_disk()
+        # if the top disk is bigger than the selected disk or the peg is empty (top_disk is null)
+        if top_disk and top_disk.width_class > self.selected_disk.width_class or (not top_disk):
+            self.selected_disk.set_state(SelectedDisk.DiskState.MOVING_DOWN)
 
     def move_selected_disk_left(self):
         # check if the current peg candidate is not the leftmost one

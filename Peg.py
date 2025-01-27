@@ -23,7 +23,7 @@ class Peg:
             print(disk.stack_index)
             return disk
 
-    def get_top_disk(self):
+    def get_top_disk(self) -> Disk | None:
         if self.disks:
             return self.disks[-1]
         else:

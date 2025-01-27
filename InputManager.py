@@ -36,5 +36,4 @@ class InputManager:
                     elif event.key == pygame.K_RIGHT:
                         self.game_state.move_selected_disk_right()
                     elif event.key == pygame.K_DOWN:
-                        if self.game_state.selected_disk:
-                            self.game_state.set_selected_disk_move_direction((0, 1))
+                        self.game_state.move_selected_disk_down()

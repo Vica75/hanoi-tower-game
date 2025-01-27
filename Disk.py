@@ -1,7 +1,5 @@
 import random
 from window_config import WINDOW_WIDTH, WINDOW_HEIGHT
-import pygame
-from enum import Enum
 
 
 class Disk:
@@ -10,16 +8,19 @@ class Disk:
     BASE_WIDTH = 60
     EXTENSION_WIDTH = 40
 
-    def __init__(self, stack_index, width_class):
-        self.peg_index = 0
+    def __init__(self, stack_index, width_class, colour=None, peg_index=0):
+        self.peg_index = peg_index
         self.stack_index = stack_index  # if 0 -> means bottom of the stack
         self.width_class = width_class  # if 0 -> means the smallest disk
         self.width = Disk.BASE_WIDTH + (self.width_class * Disk.EXTENSION_WIDTH)
-        self.colour = (
-            random.randint(0, 255),
-            random.randint(0, 255),
-            random.randint(0, 255)
-        )
+        if colour:
+            self.colour = colour
+        else:
+            self.colour = (
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255)
+            )
         self.screen_pos = self.calculate_screen_position()
 
     def set_position(self, position: tuple):

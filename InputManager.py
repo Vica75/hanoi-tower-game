@@ -22,7 +22,6 @@ class InputManager:
                     if event.key == pygame.K_1:
                         # could be replaced by a function in GameState that only takes the peg index,
                         # but I find this more readable
-                        print("selecting disk")
                         self.game_state.set_selected_disk(self.game_state.get_peg(0).pop_disk())
                     elif event.key == pygame.K_2:
                         self.game_state.set_selected_disk(self.game_state.get_peg(1).pop_disk())

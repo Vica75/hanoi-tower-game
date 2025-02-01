@@ -3,6 +3,7 @@ import pygame
 from Disk import Disk
 from GameState import GameState
 import window_config
+from GameView import GameView
 from Peg import Peg
 
 
@@ -29,17 +30,24 @@ class Renderer:
         self.clock = pygame.time.Clock()
         self.pegs_positions = []
 
-        # could move that logic into the peg class but the peg position is only calculated once and never changes
-        for peg in self.game_state.get_pegs():
-            # 3 pegs divide the screen into 4 areas, hence splitting the WINDOW_WIDTH by 4
-            peg.screen_pos = (self.WINDOW_WIDTH / 4 * (peg.index + 1) - Peg.WIDTH / 2,
-                              self.WINDOW_HEIGHT - Peg.HEIGHT)
+    def draw(self):
+        match self.game_state.current_screen:
+            case GameView.START_SCREEN:
+                self.draw_start_screen()
+            case GameView.GAME_SCREEN:
+                self.draw_game()
+            case GameView.WIN_SCREEN:
+                self.draw_win_screen()
+
+    # drawing the start screen
+    def draw_start_screen(self):
+        self.draw_background()
+
+    # drawing the win screen
+    def draw_win_screen(self):
+        self.draw_background()
 
     def draw_game(self):
-        # calculate delta_time
-        # delta_time = self.clock.tick(60) / 1000
-
-        # print(self.game_state.is_disk_moving)
         # draw background
         self.draw_background()
 
@@ -55,35 +63,6 @@ class Renderer:
         # draw selected disk
         if self.game_state.selected_disk:
             self.draw_disk(self.game_state.selected_disk)
-
-        # update position and draw the selected disk
-        # if self.game_state.selected_disk:
-        #     can_move_up = (
-        #         self.game_state.selected_disk_move_direction == (0, -1)
-        #         and self.selected_disk_position[1] > self.MAX_HEIGHT
-        #     )
-        #     can_move_down = (
-        #         self.game_state.selected_disk_move_direction == (0, 1) and self.game_state.validate_move_down()
-        #         and self.selected_disk_position[1]
-        #         < self.WINDOW_HEIGHT - 50 - len(self.game_state.get_current_peg_candidate().disks) * self.DISK_HEIGHT
-        #     )
-        #     can_move_left = (
-        #         self.game_state.selected_disk_move_direction == (-1, 0)
-        #         and self.selected_disk_position[0] + (self.game_state.selected_disk.calculate_disk_width() / 2)
-        #         > self.game_state.get_current_peg_candidate().screen_pos[0]
-        #     )
-        #     can_move_right = (
-        #         self.game_state.selected_disk_move_direction == (1, 0)
-        #         and self.selected_disk_position[0] + self.game_state.selected_disk.calculate_disk_width() / 2
-        #         < self.game_state.get_current_peg_candidate().screen_pos[0]
-        #     )
-        #
-        #     if can_move_up or can_move_down or can_move_right or can_move_left:
-        #         self.update_selected_disk_position(delta_time)
-        #     else:
-        #         self.game_state.is_disk_moving = False
-        #
-        #     # self.draw_disk()
 
     def draw_background(self):
         self.screen.blit(self.BG, (0, 0))

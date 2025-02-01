@@ -15,17 +15,21 @@ class GameState:
     current_peg_candidate_index: int
     clock = pygame.time.Clock()
 
-    def __init__(self):
+    def __init__(self, current_screen):
+        self.current_screen = current_screen
         self.pegs = []
         # current_disk - the disk that was selected to be moved in the current turn
         self.selected_disk = None
-        # self.selected_disk_state = DiskMovementState.NONE
         # set the peg candidate index to -1 meaning None
         self.current_peg_candidate_index = -1
         self.selected_disk_move_direction = (0, 0)
         self.is_disk_moving = False
+        self.number_of_disks = 0  # initialised in self.initialise_game()
 
     def initialise_game(self, number_of_disks):  # add number of pegs parameter
+        # store the number of disks
+        self.number_of_disks = number_of_disks
+
         # create the pegs
         for i in range(3):
             self.pegs.append(Peg(i))
@@ -70,12 +74,19 @@ class GameState:
         peg_index = self.selected_disk.peg_candidate.index
         self.selected_disk.peg_candidate.add_disk(Disk(stack_index, width_class, colour, peg_index))
         self.selected_disk = None
+        self.check_game_won()
 
-    # def reset_selected_disk(self):
-    #     self.selected_disk = None
-    #     # self.selected_disk_state = DiskMovementState.NONE
-    #     self.selected_disk_move_direction = (0, 0)
-    #     self.current_peg_candidate_index = -1
+    def check_game_won(self):
+        # the peg that all the disks should be moved to in order to win the game
+        win_peg = self.pegs[len(self.pegs)-1]
+
+        # if all the disks are on the winning peg -> game won
+        if len(win_peg.disks) == self.number_of_disks:
+            print("Game Won!")
+            return True
+        else:
+            print("Keep Playing!")
+            return False
 
     def move_selected_disk_down(self):
         top_disk = self.selected_disk.peg_candidate.get_top_disk()

@@ -12,7 +12,8 @@ class Peg:
     def __init__(self, index):
         self.disks = []
         self.index = index
-        self.screen_pos = ()
+        # 3 pegs divide the screen into 4 areas, hence splitting the WINDOW_WIDTH by 4
+        self.screen_pos = (WINDOW_WIDTH / 4 * (self.index + 1) - Peg.WIDTH / 2, WINDOW_HEIGHT - Peg.HEIGHT)
 
     def add_disk(self, disk: 'Disk'):
         self.disks.append(disk)
@@ -20,7 +21,6 @@ class Peg:
     def pop_disk(self):
         if self.disks:
             disk = self.disks.pop()
-            print(disk.stack_index)
             return disk
 
     def get_top_disk(self) -> Disk | None:
@@ -34,6 +34,3 @@ class Peg:
 
     def get_disks(self):
         return self.disks
-
-
-

@@ -2,6 +2,7 @@ import pygame
 
 import SelectedDisk
 from GameState import GameState
+from GameView import GameView
 from Renderer import Renderer
 
 
@@ -11,12 +12,38 @@ class InputManager:
         self.renderer = renderer
 
     def handle_events(self):
+        match self.game_state.current_screen:
+            case GameView.START_SCREEN:
+                self.handle_start_screen_events()
+            case GameView.GAME_SCREEN:
+                self.handle_game_events()
+            case GameView.WIN_SCREEN:
+                self.handle_win_screen_events()
+
+    def handle_start_screen_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
             # this will run only once, when the key is pressed
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    print("Enter Key Pressed")
+                    self.game_state.set_current_screen(GameView.GAME_SCREEN)
 
+    def handle_win_screen_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    pygame.quit()
+
+    def handle_game_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            # this will run only once, when the key is pressed
+            elif event.type == pygame.KEYDOWN:
                 # Handle the case when none of the disks is selected - wait for selection
                 if not self.game_state.selected_disk:
                     if event.key == pygame.K_1:

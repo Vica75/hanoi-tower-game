@@ -13,7 +13,7 @@ pygame.display.set_caption("Hanoi Tower Solver", "icon")
 
 def main():
     running = True
-    current_view = GameView.GAME_SCREEN
+    current_view = GameView.START_SCREEN
     game_state = GameState(current_view)
 
     game_state.initialise_game(3)

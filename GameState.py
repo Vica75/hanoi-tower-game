@@ -1,8 +1,6 @@
-from enum import Enum
-
 import pygame.time
-
 from Disk import Disk
+from GameView import GameView
 from Peg import Peg
 from SelectedDisk import SelectedDisk
 
@@ -11,8 +9,6 @@ class GameState:
     # add type hints
     pegs: list[Peg]
     selected_disk: SelectedDisk | None
-    # selected_disk_state: DiskMovementState
-    current_peg_candidate_index: int
     clock = pygame.time.Clock()
 
     def __init__(self, current_screen):
@@ -20,8 +16,6 @@ class GameState:
         self.pegs = []
         # current_disk - the disk that was selected to be moved in the current turn
         self.selected_disk = None
-        # set the peg candidate index to -1 meaning None
-        self.current_peg_candidate_index = -1
         self.selected_disk_move_direction = (0, 0)
         self.is_disk_moving = False
         self.number_of_disks = 0  # initialised in self.initialise_game()
@@ -39,6 +33,9 @@ class GameState:
             disk = Disk(i, number_of_disks - i)
             self.pegs[0].add_disk(disk)
 
+    def set_current_screen(self, new_screen):
+        self.current_screen = new_screen
+
     def tick(self):
         delta_time = GameState.clock.tick(60) / 1000.0
         if self.selected_disk:
@@ -49,12 +46,6 @@ class GameState:
     
     def get_peg(self, index):
         return self.pegs[index]
-
-    def get_current_peg_candidate(self) -> Peg | None:
-        if self.current_peg_candidate_index != -1:
-            return self.pegs[self.current_peg_candidate_index]
-        else:
-            return None
 
     def set_selected_disk(self, disk: 'Disk | None'):
         if disk:
@@ -83,6 +74,7 @@ class GameState:
         # if all the disks are on the winning peg -> game won
         if len(win_peg.disks) == self.number_of_disks:
             print("Game Won!")
+            self.current_screen = GameView.WIN_SCREEN
             return True
         else:
             print("Keep Playing!")

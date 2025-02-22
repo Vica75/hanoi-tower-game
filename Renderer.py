@@ -1,5 +1,6 @@
 import pygame
 
+from AssetLoader import AssetLoader
 from Disk import Disk
 from GameState import GameState
 import window_config
@@ -29,6 +30,20 @@ class Renderer:
         # define the clock for delta_time calculation
         self.clock = pygame.time.Clock()
         self.pegs_positions = []
+        # array of box images
+        self.box_images = self.load_box_images()
+
+    @staticmethod
+    def load_box_images():
+        loader = AssetLoader()
+        boxes = []
+        # add all "box_size_i.png" images to the box array
+        for i in range(6):
+            box = loader.load_image("box_size_" + str(i) + ".png")
+            box = loader.scale_image(box, 6)
+            boxes.append(box)
+
+        return boxes
 
     def draw(self):
         match self.game_state.current_screen:
@@ -78,5 +93,9 @@ class Renderer:
         # create a rectangle based on the disk dimensions
         disk_surface = pygame.Surface((disk.width, Disk.HEIGHT))
         disk_surface.fill(disk.colour)
+
+        # print(disk.width_class)
+
+        disk_image = self.box_images[disk.width_class]
         # draw the rectangle at the correct position
-        self.screen.blit(disk_surface, disk.screen_pos)
+        self.screen.blit(disk_image, disk.screen_pos)

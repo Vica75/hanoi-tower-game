@@ -30,7 +30,7 @@ class GameState:
 
         # add disks to the first peg
         for i in range(number_of_disks):
-            disk = Disk(i, number_of_disks - i)
+            disk = Disk(i, number_of_disks - i - 1)
             self.pegs[0].add_disk(disk)
 
     def set_current_screen(self, new_screen):

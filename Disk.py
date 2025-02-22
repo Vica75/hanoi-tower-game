@@ -4,9 +4,11 @@ from window_config import WINDOW_WIDTH, WINDOW_HEIGHT
 
 class Disk:
 
-    HEIGHT = 40
-    BASE_WIDTH = 60
-    EXTENSION_WIDTH = 40
+    # when used with pygame surface can be chosen. When used with actual sprites, can be calculated manually,
+    # based on the sprite size, or guessed
+    HEIGHT = 50  # mathematically, it should be 54 (9px multiplied by 6) but 50 looks visually better
+    BASE_WIDTH = 96  # 16 (actual size of the box on the sprite) * 6 (scale value)
+    EXTENSION_WIDTH = 18  # 3 * 6
 
     def __init__(self, stack_index, width_class, colour=None, peg_index=0):
         self.peg_index = peg_index

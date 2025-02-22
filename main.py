@@ -16,7 +16,7 @@ def main():
     current_view = GameView.START_SCREEN
     game_state = GameState(current_view)
 
-    game_state.initialise_game(3)
+    game_state.initialise_game(6)
     renderer = Renderer(game_state, WIN)
     input_manager = InputManager(game_state, renderer)
 

@@ -1,5 +1,4 @@
 import pygame
-
 import SelectedDisk
 from GameState import GameState
 from GameView import GameView

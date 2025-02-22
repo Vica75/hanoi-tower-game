@@ -10,6 +10,10 @@ WIDTH, HEIGHT = window_config.WINDOW_WIDTH, window_config.WINDOW_HEIGHT
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Hanoi Tower Solver", "icon")
 
+# called to initialise all pygame modules that need it. Can be used instead of manually initialising every module
+# that we may want to use e.g. pygame.display.init(), pygame.fonts.init() etc.
+pygame.init()
+
 
 def main():
     running = True

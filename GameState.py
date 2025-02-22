@@ -19,6 +19,7 @@ class GameState:
         self.selected_disk_move_direction = (0, 0)
         self.is_disk_moving = False
         self.number_of_disks = 0  # initialised in self.initialise_game()
+        self.number_of_moves = 0
 
     def initialise_game(self, number_of_disks):  # add number of pegs parameter
         # store the number of disks
@@ -64,6 +65,10 @@ class GameState:
         colour = self.selected_disk.colour
         peg_index = self.selected_disk.peg_candidate.index
         self.selected_disk.peg_candidate.add_disk(Disk(stack_index, width_class, colour, peg_index))
+
+        if self.selected_disk.peg_candidate.index != self.selected_disk.peg_index:
+            self.number_of_moves += 1
+
         self.selected_disk = None
         self.check_game_won()
 

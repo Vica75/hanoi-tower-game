@@ -21,9 +21,9 @@ class Renderer:
     # menu fonts
     pygame.font.init()
     fonts = {
-        'move_counter': pygame.font.Font('fonts/Goldman/Goldman-Regular.ttf', 96),
-        'menu_big': pygame.font.Font('fonts/Goldman/Goldman-Bold.ttf', 96),
-        'menu_small': pygame.font.SysFont('fonts/Goldman/Goldman-Regular.ttf', 44, True)
+        'move_counter': pygame.font.Font('fonts/Jersey_10/Jersey10-Regular.ttf', 128),
+        'menu_big': pygame.font.Font('fonts/Jersey_10/Jersey10-Regular.ttf', 128),
+        'menu_small': pygame.font.Font('fonts/Jersey_10/Jersey10-Regular.ttf', 64)
     }
 
     # menu text colour
